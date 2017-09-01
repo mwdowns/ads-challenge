@@ -1,0 +1,21 @@
+Tables
+
+<table>
+    <tr>
+        <th>CustomerID</th>
+        <th>CompanyName</th>
+        <th>ContactName</th>
+        <th>ContactTitle</th>
+        <th>Address</th>
+    </tr>
+    <tr ng-repeat="contact in contacts">
+        <td>{{contact.CustomerID}}</td>
+        <td>{{contact.CompanyName}}</td>
+        <td>{{contact.ContactName}}</td>
+        <td>{{contact.ContactTitle}}</td>
+        <td>{{contact.Address}}</td>
+    </tr>
+</table>
+
+<button type="button" name="button" ng-click="homeClick()">home</button>
+<button type="button" name="button" ng-click="cardsClick()">cards view</button>
