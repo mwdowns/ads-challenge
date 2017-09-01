@@ -4,6 +4,13 @@ body {
     font-family: Rajdhani, sans-serif;
 }
 
+/* header styling */
+.header {
+    width: 100%;
+    text-align: center;
+}
+
+/* table page styling */
 th, td {
     width: 12.5%;
     text-align: center;
@@ -30,11 +37,7 @@ td.address {
     padding: 5px 0;
 }
 
-.header {
-    width: 100%;
-    text-align: center;
-}
-
+/* cards and single page styling */
 .container {
     width: 100%;
     background-color: #918f60;
@@ -47,7 +50,7 @@ td.address {
 .card {
     width: 30%;
     margin: 5px;
-    background-color: #625f1d;
+    background-color: #1d2162;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -71,6 +74,7 @@ td.address {
     text-align: center;
 }
 
+/* styling for the buttons divs */
 .buttons-div{
     text-align: center;
 }

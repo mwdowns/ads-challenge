@@ -2,6 +2,7 @@ var app = angular.module('address', ['ui.router']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
     
+    // The various states of the app
     $stateProvider
     .state({
         name: 'home',
@@ -10,16 +11,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
         controller: 'HomeController'
     })
     .state({
-        name: 'table',
-        url: '/table',
-        templateUrl: 'table.html',
-        controller: 'TableController'
-    })
-    .state({
-        name: 'cards',
-        url: '/cards',
-        templateUrl: 'cards.html',
-        controller: 'CardsController'
+        name: 'group',
+        url: '/group',
+        templateUrl: 'group.html',
+        controller: 'GroupController'
     })
     .state({
         name: 'single',
@@ -34,8 +29,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 app.factory('addressService', function( $rootScope, $state, $http) {
     
+    // factory for common functions we use in different controllers
     var service = {};
     
+    // this particular function parses an XML file and turns it into JSON
     service.getInfo = function() {
         
         return $http.get('ab.xml', 
@@ -48,16 +45,15 @@ app.factory('addressService', function( $rootScope, $state, $http) {
 
     };
     
+    // the following are for buttons that move from state to state
     service.goHome = function() {
+        // $rootScope.viewHome = true;
+        $rootScope.viewTable = $rootScope.viewCards = false;
         $state.go('home');
     };
     
-    service.goToTable = function() {
-        $state.go('table');
-    };
-    
-    service.goToCards = function() {
-        $state.go('cards');
+    service.goToGroup = function() {
+        $state.go('group');
     };
     
     service.goToSingle = function(id) {
@@ -68,68 +64,47 @@ app.factory('addressService', function( $rootScope, $state, $http) {
     
 });
 
-app.controller('MainController', function($scope, $rootScope, $http, $state, addressService) {
-    
-    console.log('in main controller');
-    
-});
-
 app.controller('HomeController', function($scope, $rootScope, $state, addressService) {
     
-    console.log('in home controller');
-    
+    //controller for the home page...nothing fancy just some buttons...can probably get rid of this at some point
     $scope.tableClick = function() {
-        console.log('clicked table button');
-        addressService.goToTable();
+        $rootScope.viewTable = true;
+        $rootScope.noHardRefresh = true;
+        addressService.goToGroup();
     };
     
     $scope.cardsClick = function() {
-        console.log('clicked cards button');
-        addressService.goToCards();
+        $rootScope.viewCards = true;
+        $rootScope.noHardRefresh = true;
+        addressService.goToGroup();
     };
     
 });
 
-app.controller('TableController', function($scope, $rootScope, $state, addressService) {
+app.controller('GroupController', function($scope, $rootScope, $state, addressService) {
+    //controller for the group view
     
     $scope.homeClick = function() {
-        console.log('clicked home button');
-        addressService.goHome();
-    };
-    
-    $scope.cardsClick = function() {
-        console.log('clicked cards button');
-        addressService.goToCards();
-    };
-    
-    console.log('in table controller');
-    addressService.getInfo()
-    .success(function(response) {
-        $scope.contacts = response.AddressBook.Contact;
-        console.log($scope.contacts);
-    });
-    
-    $scope.goToSingle = function(id) {
-        addressService.goToSingle(id);
-    };
-});
-
-app.controller('CardsController', function($scope, $rootScope, $state, addressService) {
-    console.log('in cards controller');
-    $scope.homeClick = function() {
-        console.log('clicked home button');
         addressService.goHome();
     };
     
     $scope.tableClick = function() {
-        console.log('clicked table button');
-        addressService.goToTable();
+        $rootScope.viewTable = true;
+        $rootScope.viewCards = false;
+        $rootScope.noHardRefresh = true;
     };
+    
+    $scope.cardsClick = function() {
+        $rootScope.viewCards = true;
+        $rootScope.viewTable = false;
+        $rootScope.noHardRefresh = true;
+    };
+    
+    console.log($scope.noHardRefresh);
     
     addressService.getInfo()
     .success(function(response) {
         $scope.contacts = response.AddressBook.Contact;
-        console.log($scope.contacts);
     });
     
     $scope.goToSingle = function(id) {
@@ -143,18 +118,17 @@ app.controller('SingleController', function($scope, $rootScope, $state, $statePa
     console.log('in single controller and this is the id: ', $scope.singleID);
     
     $scope.homeClick = function() {
-        console.log('clicked home button');
         addressService.goHome();
     };
     
     $scope.tableClick = function() {
-        console.log('clicked table button');
-        addressService.goToTable();
+        $rootScope.viewTable = true;
+        addressService.goToGroup();
     };
     
     $scope.cardsClick = function() {
-        console.log('clicked cards button');
-        addressService.goToCards();
+        $rootScope.viewCards = true;
+        addressService.goToGroup();
     };
     
     var findContact = function(contacts) {

@@ -1,11 +1,15 @@
 <div class="buttons-div">
+    
     <button type="button" name="button" ng-click="homeClick()">home</button>
     <button type="button" name="button" ng-click="tableClick()">table view</button>
     <button type="button" name="button" ng-click="cardsClick()">cards view</button>
+    
 </div>
 
 <div class="container">
+    
     <div class="card">
+        
         <div class="headings">
             <p>CustomerID:</p>
             <p>CompanyName:</p>
@@ -16,6 +20,7 @@
             <p>ContactFax:</p>
             <p>ContactAddress:</p>
         </div>
+        
         <div class="data">
             <p>{{contact.CustomerID}}</p>
             <p>{{contact.CompanyName}}</p>
@@ -26,5 +31,7 @@
             <p>{{contact.Fax}}</p>
             <p>{{contact.Address}}<br>{{contact.City}}, {{contact.PostalCode}}<br>{{contact.Country}}</p>
         </div>
+        
     </div>
+    
 </div>
