@@ -65,8 +65,8 @@ app.factory('addressService', function( $rootScope, $state, $http) {
 });
 
 app.controller('HomeController', function($scope, $rootScope, $state, addressService) {
-    
     //controller for the home page...nothing fancy just some buttons...can probably get rid of this at some point
+    
     $scope.tableClick = function() {
         $rootScope.viewTable = true;
         $rootScope.noHardRefresh = true;
@@ -82,7 +82,7 @@ app.controller('HomeController', function($scope, $rootScope, $state, addressSer
 });
 
 app.controller('GroupController', function($scope, $rootScope, $state, addressService) {
-    //controller for the group view
+    //controller for the group view. can toggle between views on page for tables and cards based on a couple rootscope varialbes. on a hard refresh this page acts like the home page.
     
     $scope.homeClick = function() {
         addressService.goHome();
@@ -99,8 +99,6 @@ app.controller('GroupController', function($scope, $rootScope, $state, addressSe
         $rootScope.viewTable = false;
         $rootScope.noHardRefresh = true;
     };
-    
-    console.log($scope.noHardRefresh);
     
     addressService.getInfo()
     .success(function(response) {
