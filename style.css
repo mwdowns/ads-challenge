@@ -6,3 +6,16 @@ th, td {
     width: 20%;
     text-align: center;
 }
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.card {
+    width: 15%;
+    margin: 5px;
+    background-color: yellow;
+}

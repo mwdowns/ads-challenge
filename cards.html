@@ -2,3 +2,15 @@ cards
 
 <button type="button" name="button" ng-click="homeClick()">home</button>
 <button type="button" name="button" ng-click="tableClick()">table view</button>
+
+<div class="container">
+    
+    <div class="card" ng-repeat="contact in contacts">
+        {{contact.CustomerID}}<br>
+        {{contact.CompanyName}}<br>
+        {{contact.ContactName}}<br>
+        {{contact.ContactTitle}}<br>
+        {{contact.Address}}<br>
+    </div>
+    
+</div>

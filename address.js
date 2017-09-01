@@ -121,6 +121,13 @@ app.controller('CardsController', function($scope, $rootScope, $state, addressSe
         console.log('clicked table button');
         addressService.goToTable();
     };
+    
+    addressService.getInfo()
+    .success(function(response) {
+        $scope.contacts = response.AddressBook.Contact;
+        console.log($scope.contacts);
+    });
+    
 });
 
 app.controller('SingleController', function($scope, $rootScope, $state, addressService) {
