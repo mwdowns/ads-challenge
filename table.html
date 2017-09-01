@@ -1,21 +1,27 @@
-Tables<br>
-
-<button type="button" name="button" ng-click="homeClick()">home</button>
-<button type="button" name="button" ng-click="cardsClick()">cards view</button>
+<div class="buttons-div">
+    <button type="button" name="button" ng-click="homeClick()">home</button>
+    <button type="button" name="button" ng-click="cardsClick()">cards view</button>
+</div>
 
 <table>
     <tr>
         <th>CustomerID</th>
         <th>CompanyName</th>
         <th>ContactName</th>
-        <th>ContactTitle</th>
+        <th>Title</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Fax</th>
         <th>Address</th>
     </tr>
-    <tr ng-repeat="contact in contacts">
+    <tr ng-repeat="contact in contacts" ng-click="goToSingle(contact.CustomerID)">
         <td>{{contact.CustomerID}}</td>
         <td>{{contact.CompanyName}}</td>
         <td>{{contact.ContactName}}</td>
         <td>{{contact.ContactTitle}}</td>
-        <td>{{contact.Address}}</td>
+        <td>{{contact.Email}}</td>
+        <td>{{contact.Phone}}</td>
+        <td>{{contact.Fax}}</td>
+        <td class="address">{{contact.Address}}<br>{{contact.City}}, {{contact.PostalCode}}<br>{{contact.Country}}</td>
     </tr>
 </table>

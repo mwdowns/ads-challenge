@@ -108,6 +108,10 @@ app.controller('TableController', function($scope, $rootScope, $state, addressSe
         $scope.contacts = response.AddressBook.Contact;
         console.log($scope.contacts);
     });
+    
+    $scope.goToSingle = function(id) {
+        addressService.goToSingle(id);
+    };
 });
 
 app.controller('CardsController', function($scope, $rootScope, $state, addressService) {
@@ -128,10 +132,41 @@ app.controller('CardsController', function($scope, $rootScope, $state, addressSe
         console.log($scope.contacts);
     });
     
+    $scope.goToSingle = function(id) {
+        addressService.goToSingle(id);
+    };
+    
 });
 
-app.controller('SingleController', function($scope, $rootScope, $state, addressService) {
-    console.log('in single controller');
+app.controller('SingleController', function($scope, $rootScope, $state, $stateParams, addressService) {
+    $scope.singleID = $stateParams.target_id;
+    console.log('in single controller and this is the id: ', $scope.singleID);
+    
+    $scope.homeClick = function() {
+        console.log('clicked home button');
+        addressService.goHome();
+    };
+    
+    $scope.tableClick = function() {
+        console.log('clicked table button');
+        addressService.goToTable();
+    };
+    
+    $scope.cardsClick = function() {
+        console.log('clicked cards button');
+        addressService.goToCards();
+    };
+    
+    var findContact = function(contacts) {
+        return contacts.CustomerID === $scope.singleID;
+    };
+    
+    addressService.getInfo()
+    .success(function(response) {
+        $scope.contact = response.AddressBook.Contact.find(findContact);
+        console.log($scope.contact);
+    });
+    
 });
 
 
