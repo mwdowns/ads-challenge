@@ -41,92 +41,37 @@
 </div>
 
 <div class="edit-form" ng-show="editing">
-    <form ng-submit="editTarget()">
-        
-        <div class="headings">
-            <p><label for="companyName">CompanyName:</label></p>
-            <p><label for="companyName">ContactName:</label></p>
-            <p><label for="companyName">ContactTitle:</label></p>
-            <p><label for="companyName">ContactEmail:</label></p>
-            <p><label for="companyName">ContactPhone:</label></p>
-            <p><label for="companyName">ContactFax:</label></p>
-            <p><label for="companyName">ContactAddress:</label></p>
+    <form ng-submit="editContact()">
+        <div class="container">
+            
+            <div class="form-card">
+                
+                <div class="form-headings">
+                    <p><label for="companyName">CompanyName:</label></p>
+                    <p><label for="companyName">ContactName:</label></p>
+                    <p><label for="companyName">ContactTitle:</label></p>
+                    <p><label for="companyName">ContactEmail:</label></p>
+                    <p><label for="companyName">ContactPhone:</label></p>
+                    <p><label for="companyName">ContactFax:</label></p>
+                    <p><label for="companyName">ContactAddress:</label></p>
+                </div>
+                
+                <div class="form-data">
+                    <p><input type="text" name="CompanyName" ng-model="contact.CompanyName" placeholder="Company Name"></p>
+                    <p><input type="text" name="ContactName" ng-model="contact.ContactName" placeholder="Contact Name"></p>
+                    <p><input type="text" name="ContactTitle" ng-model="contact.ContactTitle" placeholder="Contact Title"></p>
+                    <p><input type="text" name="Email" ng-model="contact.Email" placeholder="Email"></p>
+                    <p><input type="text" name="Phone" ng-model="contact.Phone" placeholder="Phone"></p>
+                    <p><input type="text" name="Fax" ng-model="contact.Fax" placeholder="Fax"></p>
+                    <p><input type="text" name="Address" ng-model="contact.Address" placeholder="Street Address"><br><input type="text" name="City" ng-model="contact.City" placeholder="City">, <input type="text" name="PostalCode" ng-model="contact.PostalCode" placeholder="PostalCode"><br><input type="text" name="Country" ng-model="contact.Country" placeholder="Country"></p>
+                </div>
+                
+            </div>
+            
         </div>
         
-        <div class="data">
-            <p><input type="text" name="CompanyName" ng-model="contact.CompanyName" placeholder="Company Name"></p>
-            <p><input type="text" name="ContactName" ng-model="contact.ContactName" placeholder="Company Name"></p>
-            <p>{{contact.ContactTitle}}</p>
-            <p>{{contact.Email}}</p>
-            <p>{{contact.Phone}}</p>
-            <p>{{contact.Fax}}</p>
-            <p>{{contact.Address}}<br>{{contact.City}}, {{contact.PostalCode}}<br>{{contact.Country}}</p>
+        <div class="edit-button-div">
+            <button class="create-update-button" type="submit">Save Changes</button>
         </div>
-        
-        <div class="forms-container">
-            <div class="company-name-div label">
-                <label for="companyName">CompanyName:</label>
-            </div>
-            <div class="company-name-div input">
-                <input type="text" name="companyName" ng-model="target.companyInfo.companyName" placeholder="Company Name">
-            </div>
-        </div>
-        
-        <div class="forms-container">
-            <div class="contact-name-div label">
-                <label for="numOfEmployees">ContactName:</label>
-            </div>
-            <div class="employees-div input">
-                <input type="number" name="numOfEmployees" ng-model="target.companyInfo.numOfEmployees" placeholder="1">
-            </div>
-        </div>
-        
-        <div class="forms-container">
-            <div class="company-status-div label">
-                <label for="companyStatus">Status:</label>
-            </div>
-            <div class="company-status-div input">
-                <select name="statusList" ng-model="target.companyStatus">
-                    <option ng-repeat="option in statusList" value="{{option}}">{{option}}</option>
-                </select>
-            </div>
-        </div>
-        
-        <div class="forms-container">
-            <div class="financial-perf-div label">
-                <label for="financialPerf">Financial Performance:</label>
-            </div>
-            <div class="financial-perf-div input">
-                <select name="financialPerfList" ng-model="target.financialPerf">
-                    <option ng-repeat="option in finacialPerfList" value="{{option}}">{{option}}</option>
-                </select>
-            </div>
-        </div>
-        
-        <div class="forms-container">
-            <div class="contacts-div label">
-                <label for="Contacts">Company Contacts:</label>
-            </div>
-            <div class="contacts-div input">
-                <ul ng-repeat="contact in arrayOfContacts track by contact.contactID">
-                    <input type="hidden" ng-model="contact.contactID">
-                    <li><input type="text" ng-model="contact.contactName" placeholder="Contact Name"></li>
-                    <li><input type="text" ng-model="contact.contactPhone" placeholder="Contact Phone"></li>
-                    <li style="margin-bottom:5px"><input type="email" ng-model="contact.contactEmail" placeholder="Contact Email"></li>
-                </ul>
-                <button class="add-another-contact" type="button" ng-click="addAnotherContact()">Add Another Contact</button> 
-            </div>
-        </div>
-        
-        <div class="forms-container">
-            <div class="comments-div label">
-                <label for="Comments">Comments:</label>
-            </div>
-            <div class="comments-div input">
-                <textarea rows="4" cols="50" name="companyComments" ng-model="target.companyComments" placeholder="Comment away, Buckaroo!"></textarea>
-            </div>
-        </div>
-        
-        <button class="create-update-button" type="submit">Save Changes</button>
     </form>
 </div>

@@ -4,10 +4,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
     
     // The various states of the app
     $stateProvider
+    // This is the basic viewing state. Takes an object as a stateparam
     .state({
         name: 'home',
         url: '/',
         templateUrl: 'home.html',
+        params: {obj: null},
         controller: 'HomeController'
     })
     .state({
@@ -23,10 +25,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 app.factory('addressService', function( $rootScope, $state, $http) {
     
-    // factory for common functions we use in different controllers
+    // Factory for common functions we use in different controllers
     var service = {};
     
-    // this particular function parses an XML file and turns it into JSON
+    // This particular function parses an XML file and turns it into JSON
     service.getInfo = function() {
         
         return $http.get('ab.xml', 
@@ -39,6 +41,7 @@ app.factory('addressService', function( $rootScope, $state, $http) {
 
     };
     
+    // The following services toggle swtiches for various views on the home page
     service.homeClick = function() {
         $rootScope.noHardRefresh = false;
         $rootScope.viewTable = false;
@@ -57,7 +60,7 @@ app.factory('addressService', function( $rootScope, $state, $http) {
         $rootScope.noHardRefresh = true;
     };
     
-    // this moves to the single card view
+    // This moves to the single card view takes single argument, id.
     service.goToSingle = function(id) {
         $state.go('single', {target_id: id} );
     };
@@ -66,36 +69,31 @@ app.factory('addressService', function( $rootScope, $state, $http) {
     
 });
 
-app.controller('HomeController', function($scope, $rootScope, $state, addressService) {
-    //controller for the home view. can toggle between views on page for tables and cards based on a couple rootscope varialbes. on a hard refresh this page acts like the home page.
+app.controller('HomeController', function($scope, $rootScope, $state, $stateParams, addressService) {
+    // Controller for the home view. Can toggle between views on page for tables and cards based on a couple rootscope varialbes. On a hard refresh this page acts like the home page.
     
     $scope.homeClick = function() {
-        // $rootScope.noHardRefresh = false;
-        // $rootScope.viewTable = false;
-        // $rootScope.viewCards = false;
         addressService.homeClick();
     };
     
     $scope.tableClick = function() {
-        // $rootScope.viewTable = true;
-        // $rootScope.viewCards = false;
-        // $rootScope.noHardRefresh = true;
-        console.log($rootScope.contacts);
         addressService.tableClick();
     };
     
     $scope.cardsClick = function() {
-        // $rootScope.viewCards = true;
-        // $rootScope.viewTable = false;
-        // $rootScope.noHardRefresh = true;
         addressService.cardsClick();
     };
     
-    // retrieves the data JSON data and sets it to scope so that the html can display the info
-    addressService.getInfo()
-    .success(function(response) {
-        $rootScope.contacts = response.AddressBook.Contact;
-    });
+    // Here we're getting the data to populate the address book. It looks for the stateparam object. If it's null or the the value of obj isn't an array, it calls the service. Else, it uses the object passed.
+    if ($stateParams.obj === null || Array.isArray($stateParams.obj) === false) {
+        addressService.getInfo()
+        .success(function(response) {
+            $rootScope.contacts = response.AddressBook.Contact;
+        });
+    } else {
+        console.log(Array.isArray($stateParams.obj));
+        $rootScope.contacts = $stateParams.obj;
+    }
     
     $scope.goToSingle = function(id) {
         addressService.goToSingle(id);
@@ -107,6 +105,7 @@ app.controller('SingleController', function($scope, $rootScope, $state, $statePa
     $scope.singleID = $stateParams.target_id;
 
     $scope.contacts = $rootScope.contacts;
+    console.log($scope.contacts);
     
     var findContact = function(contacts) {
         return contacts.CustomerID === $scope.singleID;
@@ -116,30 +115,26 @@ app.controller('SingleController', function($scope, $rootScope, $state, $statePa
     
     $scope.homeClick = function() {
         addressService.homeClick();
-        $state.go('home');
+        $state.go('home', {obj: $scope.contacts});
     };
     
     $scope.tableClick = function() {
         addressService.tableClick();
-        $state.go('home');
+        $state.go('home', {obj: $scope.contacts});
     };
     
     $scope.cardsClick = function() {
         addressService.cardsClick();
-        $state.go('home');
+        $state.go('home', {obj: $scope.contacts});
     };
     
-    // addressService.getInfo()
-    // .success(function(response) {
-    //     $scope.contact = response.AddressBook.Contact.find(findContact);
-    // });
-    
     $scope.edit = function() {
-        console.log($scope.contact);
-        console.log($rootScope.contacts);
         $scope.editing = true;
     };
     
+    $scope.editContact = function() {
+        $state.go('home', {obj: $scope.contacts});  
+    };
 });
 
 
