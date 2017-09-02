@@ -39,6 +39,24 @@ app.factory('addressService', function( $rootScope, $state, $http) {
 
     };
     
+    service.homeClick = function() {
+        $rootScope.noHardRefresh = false;
+        $rootScope.viewTable = false;
+        $rootScope.viewCards = false;
+    };
+    
+    service.tableClick = function() {
+        $rootScope.viewTable = true;
+        $rootScope.viewCards = false;
+        $rootScope.noHardRefresh = true;
+    };
+    
+    service.cardsClick = function() {
+        $rootScope.viewCards = true;
+        $rootScope.viewTable = false;
+        $rootScope.noHardRefresh = true;
+    };
+    
     // this moves to the single card view
     service.goToSingle = function(id) {
         $state.go('single', {target_id: id} );
@@ -48,31 +66,35 @@ app.factory('addressService', function( $rootScope, $state, $http) {
     
 });
 
-app.controller('HomeController', function($scope, $state, addressService) {
+app.controller('HomeController', function($scope, $rootScope, $state, addressService) {
     //controller for the home view. can toggle between views on page for tables and cards based on a couple rootscope varialbes. on a hard refresh this page acts like the home page.
     
     $scope.homeClick = function() {
-        $scope.noHardRefresh = false;
-        $scope.viewTable = false;
-        $scope.viewCards = false;
+        // $rootScope.noHardRefresh = false;
+        // $rootScope.viewTable = false;
+        // $rootScope.viewCards = false;
+        addressService.homeClick();
     };
     
     $scope.tableClick = function() {
-        $scope.viewTable = true;
-        $scope.viewCards = false;
-        $scope.noHardRefresh = true;
+        // $rootScope.viewTable = true;
+        // $rootScope.viewCards = false;
+        // $rootScope.noHardRefresh = true;
+        console.log($rootScope.contacts);
+        addressService.tableClick();
     };
     
     $scope.cardsClick = function() {
-        $scope.viewCards = true;
-        $scope.viewTable = false;
-        $scope.noHardRefresh = true;
+        // $rootScope.viewCards = true;
+        // $rootScope.viewTable = false;
+        // $rootScope.noHardRefresh = true;
+        addressService.cardsClick();
     };
     
     // retrieves the data JSON data and sets it to scope so that the html can display the info
     addressService.getInfo()
     .success(function(response) {
-        $scope.contacts = response.AddressBook.Contact;
+        $rootScope.contacts = response.AddressBook.Contact;
     });
     
     $scope.goToSingle = function(id) {
@@ -83,29 +105,40 @@ app.controller('HomeController', function($scope, $state, addressService) {
 
 app.controller('SingleController', function($scope, $rootScope, $state, $stateParams, addressService) {
     $scope.singleID = $stateParams.target_id;
-    
-    $scope.homeClick = function() {
-        $state.go('home');
-    };
-    
-    $scope.tableClick = function() {
-        $rootScope.viewTable = true;
-        $state.go('home');
-    };
-    
-    $scope.cardsClick = function() {
-        $rootScope.viewCards = true;
-        addressService.goToGroup();
-    };
+
+    $scope.contacts = $rootScope.contacts;
     
     var findContact = function(contacts) {
         return contacts.CustomerID === $scope.singleID;
     };
     
-    addressService.getInfo()
-    .success(function(response) {
-        $scope.contact = response.AddressBook.Contact.find(findContact);
-    });
+    $scope.contact = $rootScope.contacts.find(findContact);
+    
+    $scope.homeClick = function() {
+        addressService.homeClick();
+        $state.go('home');
+    };
+    
+    $scope.tableClick = function() {
+        addressService.tableClick();
+        $state.go('home');
+    };
+    
+    $scope.cardsClick = function() {
+        addressService.cardsClick();
+        $state.go('home');
+    };
+    
+    // addressService.getInfo()
+    // .success(function(response) {
+    //     $scope.contact = response.AddressBook.Contact.find(findContact);
+    // });
+    
+    $scope.edit = function() {
+        console.log($scope.contact);
+        console.log($rootScope.contacts);
+        $scope.editing = true;
+    };
     
 });
 
