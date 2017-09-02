@@ -102,10 +102,11 @@ app.controller('HomeController', function($scope, $rootScope, $state, $statePara
 });
 
 app.controller('SingleController', function($scope, $rootScope, $state, $stateParams, addressService) {
+    // Controller for single contact view. Will get the ID of the contact from the $stateParam and use that to bring up the contact.
+    
     $scope.singleID = $stateParams.target_id;
 
     $scope.contacts = $rootScope.contacts;
-    console.log($scope.contacts);
     
     var findContact = function(contacts) {
         return contacts.CustomerID === $scope.singleID;
@@ -128,10 +129,12 @@ app.controller('SingleController', function($scope, $rootScope, $state, $statePa
         $state.go('home', {obj: $scope.contacts});
     };
     
+    // Toggles the edit view on the page
     $scope.edit = function() {
         $scope.editing = true;
     };
     
+    // Submits the changes, goes back to the home page
     $scope.editContact = function() {
         $state.go('home', {obj: $scope.contacts});  
     };
