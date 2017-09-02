@@ -11,12 +11,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
         controller: 'HomeController'
     })
     .state({
-        name: 'group',
-        url: '/group',
-        templateUrl: 'group.html',
-        controller: 'GroupController'
-    })
-    .state({
         name: 'single',
         url: '/single/{target_id}',
         templateUrl: 'single.html',
@@ -45,17 +39,7 @@ app.factory('addressService', function( $rootScope, $state, $http) {
 
     };
     
-    // the following are for buttons that move from state to state
-    service.goHome = function() {
-        // $rootScope.viewHome = true;
-        $rootScope.viewTable = $rootScope.viewCards = false;
-        $state.go('home');
-    };
-    
-    service.goToGroup = function() {
-        $state.go('group');
-    };
-    
+    // this moves to the single card view
     service.goToSingle = function(id) {
         $state.go('single', {target_id: id} );
     };
@@ -64,42 +48,28 @@ app.factory('addressService', function( $rootScope, $state, $http) {
     
 });
 
-app.controller('HomeController', function($scope, $rootScope, $state, addressService) {
-    //controller for the home page...nothing fancy just some buttons...can probably get rid of this at some point
-    
-    $scope.tableClick = function() {
-        $rootScope.viewTable = true;
-        $rootScope.noHardRefresh = true;
-        addressService.goToGroup();
-    };
-    
-    $scope.cardsClick = function() {
-        $rootScope.viewCards = true;
-        $rootScope.noHardRefresh = true;
-        addressService.goToGroup();
-    };
-    
-});
-
-app.controller('GroupController', function($scope, $rootScope, $state, addressService) {
-    //controller for the group view. can toggle between views on page for tables and cards based on a couple rootscope varialbes. on a hard refresh this page acts like the home page.
+app.controller('HomeController', function($scope, $state, addressService) {
+    //controller for the home view. can toggle between views on page for tables and cards based on a couple rootscope varialbes. on a hard refresh this page acts like the home page.
     
     $scope.homeClick = function() {
-        addressService.goHome();
+        $scope.noHardRefresh = false;
+        $scope.viewTable = false;
+        $scope.viewCards = false;
     };
     
     $scope.tableClick = function() {
-        $rootScope.viewTable = true;
-        $rootScope.viewCards = false;
-        $rootScope.noHardRefresh = true;
+        $scope.viewTable = true;
+        $scope.viewCards = false;
+        $scope.noHardRefresh = true;
     };
     
     $scope.cardsClick = function() {
-        $rootScope.viewCards = true;
-        $rootScope.viewTable = false;
-        $rootScope.noHardRefresh = true;
+        $scope.viewCards = true;
+        $scope.viewTable = false;
+        $scope.noHardRefresh = true;
     };
     
+    // retrieves the data JSON data and sets it to scope so that the html can display the info
     addressService.getInfo()
     .success(function(response) {
         $scope.contacts = response.AddressBook.Contact;
@@ -113,15 +83,14 @@ app.controller('GroupController', function($scope, $rootScope, $state, addressSe
 
 app.controller('SingleController', function($scope, $rootScope, $state, $stateParams, addressService) {
     $scope.singleID = $stateParams.target_id;
-    console.log('in single controller and this is the id: ', $scope.singleID);
     
     $scope.homeClick = function() {
-        addressService.goHome();
+        $state.go('home');
     };
     
     $scope.tableClick = function() {
         $rootScope.viewTable = true;
-        addressService.goToGroup();
+        $state.go('home');
     };
     
     $scope.cardsClick = function() {
@@ -136,7 +105,6 @@ app.controller('SingleController', function($scope, $rootScope, $state, $statePa
     addressService.getInfo()
     .success(function(response) {
         $scope.contact = response.AddressBook.Contact.find(findContact);
-        console.log($scope.contact);
     });
     
 });
