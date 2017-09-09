@@ -3,6 +3,7 @@
     <button type="button" name="button" ng-click="homeClick()" ng-hide="!noHardRefresh">home</button>
     <button type="button" name="button" ng-click="tableClick()" ng-hide="viewTable">table view</button>
     <button type="button" name="button" ng-click="cardsClick()" ng-hide="viewCards">cards view</button>
+    <input type="text" ng-model="searchBox" ng-hide="!noHardRefresh" placeholder="Type your search here...">
     
 </div>
 
@@ -21,7 +22,7 @@
             <th>Address</th>
         </tr>
         
-        <tr ng-repeat="contact in contacts" ng-click="goToSingle(contact.CustomerID)">
+        <tr ng-repeat="contact in contacts | filter: searchBox" ng-click="goToSingle(contact.CustomerID)">
             <td>{{contact.CustomerID}}</td>
             <td>{{contact.CompanyName}}</td>
             <td>{{contact.ContactName}}</td>
@@ -36,7 +37,7 @@
 
     <div class="container" ng-hide="viewTable">
         
-        <div class="card" ng-repeat="contact in contacts" ng-click="goToSingle(contact.CustomerID)">
+        <div class="card" ng-repeat="contact in contacts | filter: searchBox" ng-click="goToSingle(contact.CustomerID)">
             
             <div class="headings">
                 <p>CustomerID:</p>
